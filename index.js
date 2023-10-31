@@ -82,12 +82,21 @@ async function run() {
     })
     //--------------------------------projection on single product and get data ------------------
     app.get(`/productsWithRequireField/:id`, async (req, res) => {
-        const id = req.params.id
-        const query = { _id: new ObjectId(id) }
-        const products2 = await products2Collection.findOne(query,{projection:{name:true,category:true}})
-        res.send(products2)
+      const id = req.params.id
+      const query = { _id: new ObjectId(id) }
+      const products2 = await products2Collection.findOne(query, {
+        projection: { name: true, category: true },
       })
+      res.send(products2)
+    })
 
+    //+++++++++++++++++++++++++++++++++++POST data in productsCollection+++++++++++++++++++++++++++
+    app.post("/products", async (req, res) => {
+      const obj = req.body
+      const result = await productsCollection.insertOne(obj)
+      console.log(result)
+      res.send(result)
+    })
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 })
